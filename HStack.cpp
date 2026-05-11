@@ -4,16 +4,11 @@ using namespace std;
 
 Node::Node(int val): value(val), next(nullptr){}
 
-Stack::Stack():head(nullptr){}
-Stack::Stack(int value): head(nullptr){
-    head=new Node(value);
-}
-Stack::Stack(int value, int count): head(nullptr){
-    for (int i = 0; i < count; i++) {
-        Node* newNode = new Node(value);
-        newNode->next = head;
-        head = newNode;
-    }
+Stack::Stack() : head(nullptr) {}
+Stack::Stack(int value) : head(new Node(value)) {}
+Stack::Stack(int value, int count) : head(nullptr) {
+    for (int i = 0; i < count; i++)
+        head = new Node(value);
 }
 Stack::~Stack() {
     while (head != nullptr) {
@@ -25,21 +20,14 @@ Stack::~Stack() {
 Stack Stack:: operator+(Stack& otherSt){
     Stack result;
     Node* upper = head;
-    while(upper->next !=nullptr)
-    {
-        upper = upper->next;
-    }
+    while(upper->next !=nullptr)upper = upper->next;
     upper->next = otherSt.head;
     result.head = head;
-    head = nullptr;
-    otherSt.head = nullptr;
+    head = otherSt.head = nullptr;
     return result;
 }
 void Stack::print() const {
-    Node* current = head;
-    while (current != nullptr) {
+    for (Node* current = head; current; current = current->next)
         cout << current->value << " ";
-        current = current->next;
-    }
     cout << endl;
 }
