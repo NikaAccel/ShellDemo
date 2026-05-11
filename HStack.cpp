@@ -2,13 +2,18 @@
 #include <iostream>
 using namespace std;
 
-Node::Node(int val): value(val), next(nullptr){}
+Node::Node(int val) : value(val), next(nullptr) {}
 
-Stack::Stack() : head(nullptr) {}
-Stack::Stack(int value) : head(new Node(value)) {}
+Stack::Stack() :head(nullptr) {}
+Stack::Stack(int value) : head(nullptr) {
+    head = new Node(value);
+}
 Stack::Stack(int value, int count) : head(nullptr) {
-    for (int i = 0; i < count; i++)
-        head = new Node(value);
+    for (int i = 0; i < count; i++) {
+        Node* newNode = new Node(value);
+        newNode->next = head;
+        head = newNode;
+    }
 }
 Stack::~Stack() {
     while (head != nullptr) {
@@ -17,17 +22,24 @@ Stack::~Stack() {
         delete temp;
     }
 }
-Stack Stack:: operator+(Stack& otherSt){
+Stack Stack:: operator+(Stack& otherSt) {
     Stack result;
     Node* upper = head;
-    while(upper->next !=nullptr)upper = upper->next;
+    while (upper->next != nullptr)
+    {
+        upper = upper->next;
+    }
     upper->next = otherSt.head;
     result.head = head;
-    head = otherSt.head = nullptr;
+    head = nullptr;
+    otherSt.head = nullptr;
     return result;
 }
 void Stack::print() const {
-    for (Node* current = head; current; current = current->next)
+    Node* current = head;
+    while (current != nullptr) {
         cout << current->value << " ";
+        current = current->next;
+    }
     cout << endl;
 }
